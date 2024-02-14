@@ -1,0 +1,9 @@
+Ans 1. I have taken 3 services: product, cart, user and 1 gateway: apigateway; Product for having product data like pname, pprice, pquantity, Cart for holding cart data and checkout, User for authorization and authentication
+
+Ans 2. Url definition through gateway: http://localhost:8000/Product (get products)
+
+Ans 3. (Push image to hub)docker tag namespace/image_name new_namespace/new_image_name:1.0.0 
+docker push new_namespace/new_image_name:1.0.0 
+(Link of docker hub to pull images) https://hub.docker.com/repositories/gaurav826
+
+Ans 4. (Run docker compose) docker-compose up --build -d

@@ -1,0 +1,138 @@
+{
+  "Routes": [
+    // User Authentication Web API
+    {
+      "UpstreamPathTemplate": "/Account",
+      "UpstreamHttpMethod": [ "Post" ],
+      "Key": "User",
+
+      "DownstreamPathTemplate": "/api/Account",
+      "DownstreamScheme": "http",
+      "ServiceName": "UserApi",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 7186
+      //  }
+      //]
+    },
+
+    // Product Web API
+    {
+      "UpstreamPathTemplate": "/Product",
+      "UpstreamHttpMethod": [ "Get", "Post" ],
+      "Key": "Product",
+
+      "DownstreamPathTemplate": "/api/Product",
+      "DownstreamScheme": "http",
+      "ServiceName": "ProductApi"
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 7278
+      //  }
+      //]
+    },
+
+    // Product Web API
+    {
+      "UpstreamPathTemplate": "/Product/AddToCart/{productId}",
+      "UpstreamHttpMethod": [ "Post" ],
+
+      "DownstreamPathTemplate": "/api/Product/AddToCart/{productId}",
+      "DownstreamScheme": "http",
+      "ServiceName": "ProductApi",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 7278
+      //  }
+      //]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //},
+      //"RouteClaimsRequirement": {
+      //  "Role": "Admin"
+      //}
+    },
+
+    // Product Web API {ProductId}
+    {
+      "UpstreamPathTemplate": "/Product/{productId}",
+      "UpstreamHttpMethod": [ "Get", "Put", "Delete" ],
+
+      "DownstreamPathTemplate": "/api/Product/{productId}",
+      "DownstreamScheme": "http",
+      "ServiceName": "ProductApi",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 7278
+      //  }
+      //]
+    },
+
+    // Cart Web API
+    {
+      "UpstreamPathTemplate": "/Cart",
+      "UpstreamHttpMethod": [ "Get" ],
+      "Key": "Cart",
+
+      "DownstreamPathTemplate": "/api/Cart",
+      "DownstreamScheme": "http",
+      "ServiceName": "CartApi",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+      //"DownstreamHostAndPorts": [
+      //  {
+      //    "Host": "localhost",
+      //    "Port": 7256
+      //  }
+      //]
+    },
+
+    // Cart Web API {cartId}
+    {
+      "UpstreamPathTemplate": "/Cart/{cartId}",
+      "UpstreamHttpMethod": [ "Post" ],
+
+      "DownstreamPathTemplate": "/api/Cart/{cartId}",
+      "DownstreamScheme": "http",
+      "ServiceName": "CartApi",
+      "LoadBalancerOptions": {
+        "Type": "RoundRobin"
+      }
+    }
+  ],
+
+  "Aggregates": [
+    {
+      "RouteKeys": [ "Product", "Cart" ],
+      "UpstreamPathTemplate": "/ProductandCart"
+    }
+  ],
+
+  "GlobalConfiguration": {
+    "RequestIdKey": "OcRequestId",
+    //"DownstreamScheme": "http",
+    //"ReRoutesCaseSensitive": false,
+    "UseServiceDiscovery": true,
+    "ServiceDiscoveryProvider": {
+      "Type": "Eureka",
+      "Host": "eureka-server",
+      "Port": 8761
+    }
+    //"BaseUrl": "http://localhost:5014"
+  }
+}

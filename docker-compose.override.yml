@@ -1,0 +1,63 @@
+version: '3.4'
+
+services:
+  eureka-server:
+    environment:
+       - EUREKA_SERVER_ENABLE_SELF_PRESERVATION=false
+    ports:
+       - 8761:8761
+  
+  userauthenticationapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8000:8080
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+
+  productapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8100:8080
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+      
+  cartapi:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8200:8080
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+
+  apigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:8080
+      - EUREKA_CLIENT_SERVICEURL=http://eureka-server:8761/eureka
+    ports:
+      - 8300:8080
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    depends_on:
+      - eureka-server
+      - userauthenticationapi
+      - cartapi
+      - productapi
